@@ -1,6 +1,6 @@
 export interface ITodo {
-  _id: string;
-  id: string;
-  text: string;
+  _id?: string;
+  title: string;
+  description?: string;
   isCompleted: boolean;
 }

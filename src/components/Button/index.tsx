@@ -25,12 +25,12 @@ const Button: React.FC<IButton> = ({
     <button
       className={`${
         className && className
-      } px-2 py-1 rounded-lg hover:bg-slate-400/30 active:bg-slate-400/50 transition text-center overflow-hidden content-center items-center ${
+      } px-2 py-1 rounded-lg hover:bg-stone-400/30 active:bg-stone-400/50 transition text-center overflow-hidden content-center items-center ${
         variant === "outlined"
           ? "bg-transparent outline outline-1"
           : variant === "borderless"
           ? "bg-transparent"
-          : "bg-slate-400/20"
+          : "bg-stone-400/20"
       }`}
       onClick={onClick}
       title={title}

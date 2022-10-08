@@ -28,12 +28,12 @@ const AddTodo: React.FC = () => {
   };
 
   return (
-    <div className="grid justify-items-stretch border border-slate-500 p-10 gap-2">
+    <div className="grid justify-items-stretch border border-stone-500 p-10 gap-2">
       <div>
         <h2 className="text-center mb-2 font-bold">Add Todo</h2>
       </div>
       <input
-        className="bg-slate-800 border border-slate-300 rounded-lg focus:ring-slate-500 focus:border-slate-500 block w-full p-2.5 mb-5"
+        className="bg-stone-800 border border-stone-300 rounded-lg focus:ring-stone-500 focus:border-stone-500 block w-full p-2.5 mb-5"
         type="text"
         id="addTodo"
         value={addTodoText}
@@ -46,7 +46,7 @@ const AddTodo: React.FC = () => {
           icon={<BsPlusCircleFill />}
           iconRight
           text="Add"
-          className="bg-slate-800 outline outline-1 focus:border-slate-500"
+          className="bg-stone-800 outline outline-1 focus:border-stone-500"
           onClick={clickHandler}
           title="Add Todo"
         />
