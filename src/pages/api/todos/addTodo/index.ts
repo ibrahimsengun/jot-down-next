@@ -9,11 +9,17 @@ export default async function handler(
   const { body } = req;
   const { title, description } = body;
 
-  await addTodo(title, description)
-    .then(() => {
-      res.status(200);
-    })
-    .catch((error) => {
-      res.status(500).send(error);
-    });
+  return new Promise((resolve, reject) => {
+    addTodo(title, description)
+      .then(() => {
+        res.status(200);
+        res.end();
+        resolve("Success");
+      })
+      .catch((error) => {
+        res.status(500).send(error);
+        res.end(error);
+        resolve(error);
+      });
+  });
 }
