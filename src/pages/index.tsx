@@ -1,52 +1,56 @@
+import axios from "axios";
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
-import styles from "../../styles/Home.module.css";
-import AddTodo from "../components/AddTodo";
-import TodoList from "../components/TodoList";
-import axios from "axios";
+import { useEffect, useState } from "react";
+import { IMongoResponse } from "../models/mongo";
+import { ITodo } from "../models/Todo";
 
-interface ITodoMongo {
-  _id: string;
-  id: string;
-  text: string;
-  isCompleted: boolean;
+interface IHomePage {
+  todos: ITodo[];
 }
 
-interface IHome {
-  todos: ITodoMongo[];
-}
+const Home: NextPage<IHomePage> = ({ todos }) => {
+  const [todo, setTodo] = useState<ITodo[]>([]);
 
-interface IMongo<T> {
-  documents: T[];
-}
+  useEffect(() => {
+    const getData = async () => {
+      const allTodos = await axios
+        .get("http://localhost:3000/api/todos/allTodos")
+        .then((response) => {
+          return response.data;
+        });
 
-const Home: NextPage<IHome> = ({ todos }) => {
-  console.log(todos);
+      setTodo(allTodos);
+    };
+
+    getData();
+  }, []);
 
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
         <title>Jot Down</title>
         <meta name="description" content="Take some 'jots'" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}></main>
+      <ol>
+        {todo.map((item) => {
+          return <li key={item._id}>{item.text}</li>;
+        })}
+      </ol>
     </div>
   );
 };
 
-Home.getInitialProps = async () => {
-  const data = await axios
-    .get<IMongo<ITodoMongo>>("http://localhost:3000/api/deneme")
-    .then((res) => {
-      return res.data?.documents;
+Home.getInitialProps = async (context) => {
+  const allTodos = await axios
+    .get("http://localhost:3000/api/todos/allTodos")
+    .then((response) => {
+      return response.data;
     });
 
-  return {
-    todos: data,
-  };
+  return { todos: allTodos };
 };
 
 export default Home;

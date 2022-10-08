@@ -1,14 +1,9 @@
 import "../../styles/globals.css";
 import type { AppProps } from "next/app";
 import App from "next/app";
-import { TodoContextProvider } from "../context/TodoContext";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return (
-    <TodoContextProvider>
-      <Component {...pageProps} />
-    </TodoContextProvider>
-  );
+  return <Component {...pageProps} />;
 }
 
 MyApp.getInitialProps = async (appContext: any) => {
