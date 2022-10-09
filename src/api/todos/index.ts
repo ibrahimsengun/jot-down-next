@@ -14,7 +14,10 @@ const dbInfos = {
 };
 
 export const getAllTodos = async () => {
-  return await MongoClient.post("find", dbInfos).then((data) => {
+  return await MongoClient.post("find", {
+    ...dbInfos,
+    sort: { isCompleted: 1 },
+  }).then((data) => {
     return data.data.documents;
   });
 };
