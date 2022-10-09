@@ -3,7 +3,7 @@ import { BiNote } from "react-icons/bi";
 
 const Header: React.FC = () => {
   return (
-    <div className="border-b p-3 sticky top-0 z-40 w-full backdrop-blur">
+    <div className="border-b-2 border-stone-500 p-3 w-full">
       <div className="flex flex-row items-end justify-end gap-3 px-5">
         <div className="flex flex-row gap-3 items-center">
           <BiNote size="3rem" />

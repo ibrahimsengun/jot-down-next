@@ -5,6 +5,9 @@ module.exports = {
     "./src/components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    fontFamily: {
+      serif: ["Montserrat", "sans-serif"],
+    },
     extend: {},
   },
   plugins: [],

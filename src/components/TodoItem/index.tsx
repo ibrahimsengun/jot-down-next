@@ -15,7 +15,11 @@ const TodoItem: React.FC<ITodoItem> = ({ todo }) => {
   const { completeTodo, removeTodo } = useTodo();
 
   return (
-    <div className="border px-3 py-3 rounded-xl">
+    <div
+      className={`border px-3 py-3 rounded-xl${
+        isCompleted ? " border-teal-700" : ""
+      }`}
+    >
       <div className="flex items-center">
         <div className="flex flex-col gap-3">
           <div
