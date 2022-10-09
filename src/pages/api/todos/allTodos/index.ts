@@ -6,14 +6,11 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
   return new Promise((resolve, reject) => {
     getAllTodos()
       .then((data) => {
-        res.status(200).send(data);
-        res.end(data);
         resolve("success");
+        return res.status(200).json(data);
       })
       .catch((error) => {
-        res.status(500).send(error);
-        res.end(error);
-        resolve(error);
+        return res.status(500).json(error);
       });
   });
 }

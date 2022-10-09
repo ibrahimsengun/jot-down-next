@@ -5,7 +5,7 @@ import TodoList from "../components/TodoList";
 import { useTodo } from "../context/TodoContext";
 
 const Home: NextPage = () => {
-  const { todos } = useTodo();
+  const { isLoading } = useTodo();
 
   return (
     <div>

@@ -6,67 +6,57 @@ import {
   useMemo,
   useContext,
 } from "react";
+import useSWR from "swr";
 import { NextAPI } from "../axios";
 import { ITodo } from "../models/Todo";
 
 interface ITodoContext {
-  todos: ITodo[];
+  todos: ITodo[] | undefined;
   isLoading: boolean;
   addTodo: (title: string, description?: string) => void;
   removeTodo: (id?: string) => void;
   completeTodo: (id?: string) => void;
-  // editTodo: (id: string, text: string) => void;
+  editTodo: (id: string, text: string) => void;
 }
 
 export const TodoContext = createContext({} as ITodoContext);
 
+const fetcher = (url: string) => NextAPI.get(url).then((res) => res.data);
+
 export const TodoContextProvider: React.FC<any> = ({ children }) => {
-  const [todos, setTodos] = useState<ITodo[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const {
+    data: todos,
+    error,
+    isValidating: isLoading,
+    mutate: mutateTodos,
+  } = useSWR<ITodo[], Error>("/api/todos/allTodos", fetcher);
 
-  const _setTodos = useCallback((newList: ITodo[]) => {
-    setTodos(newList);
-  }, []);
+  const addTodo = useCallback(
+    async (title: string, description?: string) => {
+      await NextAPI.post("api/todos/addTodo", { title, description }).then(() =>
+        mutateTodos()
+      );
+    },
+    [mutateTodos]
+  );
 
-  const getTodos = useCallback(async () => {
-    const data = await NextAPI.get<ITodo[]>("/api/todos/allTodos").then(
-      (res) => {
-        return res.data;
-      }
-    );
+  const removeTodo = useCallback(
+    async (id?: string) => {
+      await NextAPI.post("api/todos/removeTodo", { id }).then(() =>
+        mutateTodos()
+      );
+    },
+    [mutateTodos]
+  );
 
-    _setTodos(data);
-  }, [_setTodos]);
-
-  useEffect(() => {
-    getTodos();
-  }, [getTodos, isLoading]);
-
-  const addTodo = useCallback(async (title: string, description?: string) => {
-    setIsLoading(true);
-    await NextAPI.post("api/todos/addTodo", { title, description }).then(() =>
-      setIsLoading(false)
-    );
-  }, []);
-
-  const removeTodo = useCallback(async (id?: string) => {
-    setIsLoading(true);
-    await NextAPI.post("api/todos/removeTodo", { id }).then(() =>
-      setIsLoading(false)
-    );
-  }, []);
-
-  const completeTodo = useCallback(async (id?: string) => {
-    setIsLoading(true);
-    await NextAPI.post("api/todos/completeTodo", { id }).then(() =>
-      setIsLoading(false)
-    );
-  }, []);
-
-  // const _editTodo = useCallback((id: string, text: string) => {
-  //   setIsLoading(true);
-  //   editTodo(id, text).then(() => setIsLoading(false));
-  // }, []);
+  const completeTodo = useCallback(
+    async (id?: string) => {
+      await NextAPI.post("api/todos/completeTodo", { id }).then(() =>
+        mutateTodos()
+      );
+    },
+    [mutateTodos]
+  );
 
   const contextValue = useMemo(
     () => ({
@@ -75,16 +65,8 @@ export const TodoContextProvider: React.FC<any> = ({ children }) => {
       addTodo,
       removeTodo,
       completeTodo,
-      // editTodo: _editTodo,
     }),
-    [
-      todos,
-      isLoading,
-      addTodo,
-      removeTodo,
-      completeTodo,
-      //   _editTodo,
-    ]
+    [todos, isLoading, addTodo, removeTodo, completeTodo]
   );
 
   return (
