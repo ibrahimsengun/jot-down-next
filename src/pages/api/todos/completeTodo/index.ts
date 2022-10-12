@@ -9,7 +9,7 @@ export default async function handler(
   const { body } = req;
   const { id } = body;
 
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     completeTodo(id)
       .then(() => {
         res.status(200);

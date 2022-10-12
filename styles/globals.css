@@ -29,10 +29,10 @@
 
 @layer components {
   .todo-item-notcompleted {
-    @apply border border-stone-500 px-3 py-1 rounded-xl hover:border-stone-300;
+    @apply border border-stone-500 px-3 py-1 rounded-xl hover:border-stone-300 transition;
   }
 
   .todo-item-completed {
-    @apply border border-teal-700 px-3 py-1 rounded-xl hover:border-teal-300;
+    @apply border border-teal-700 px-3 py-1 rounded-xl hover:border-teal-300 transition;
   }
 }

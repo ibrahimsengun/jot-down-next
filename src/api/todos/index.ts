@@ -22,12 +22,11 @@ export const getAllTodos = async () => {
   });
 };
 
-export const addTodo = async (title: string, description?: string) => {
+export const addTodo = async (title: string) => {
   return await MongoClient.post("insertOne", {
     ...dbInfos,
     document: {
       title,
-      description,
       isCompleted: false,
     } as ITodo,
   });
@@ -45,5 +44,13 @@ export const completeTodo = async (id: string) => {
     ...dbInfos,
     filter: { _id: { $oid: id } },
     update: { $set: { isCompleted: true } },
+  });
+};
+
+export const addSubTodo = async (id: string, subTodo: string) => {
+  return await MongoClient.post("updateOne", {
+    ...dbInfos,
+    filter: { _id: { $oid: id } },
+    update: { $set: { subTodo: subTodo } },
   });
 };

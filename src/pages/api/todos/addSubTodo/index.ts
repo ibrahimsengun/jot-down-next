@@ -1,16 +1,16 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import axios from "axios";
-import { addTodo } from "../../../../api/todos";
+import { addSubTodo } from "../../../../api/todos";
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   const { body } = req;
-  const { title } = body;
+  const { title, subTodo } = body;
 
   return new Promise((resolve) => {
-    addTodo(title)
+    addSubTodo(title, subTodo)
       .then(() => {
         res.status(200);
         res.end();
