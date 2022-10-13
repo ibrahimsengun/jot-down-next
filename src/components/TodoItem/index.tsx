@@ -14,10 +14,11 @@ import { ITodo } from "../../models/Todo";
 
 interface ITodoItem {
   todo: ITodo;
+  isSubTodo?: boolean;
 }
 
-const TodoItem: React.FC<ITodoItem> = ({ todo }) => {
-  const { _id, title, isCompleted } = todo;
+const TodoItem: React.FC<ITodoItem> = ({ todo, isSubTodo = false }) => {
+  const { _id, title, isCompleted, subTodos } = todo;
   const { completeTodo, removeTodo, addSubTodo } = useTodo();
 
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
@@ -87,17 +88,27 @@ const TodoItem: React.FC<ITodoItem> = ({ todo }) => {
               title="Delete"
             />
           </div>
-          <div>
-            <Button
-              icon={arrowIcon}
-              className="hover:bg-transparent active:bg-transparent"
-              variant="borderless"
-              title="Add sub todo"
-              onClick={expandClickHandler}
-            />
-          </div>
+          {!isSubTodo && (
+            <div>
+              <Button
+                icon={arrowIcon}
+                className="hover:bg-transparent active:bg-transparent"
+                variant="borderless"
+                title="Add sub todo"
+                onClick={expandClickHandler}
+              />
+            </div>
+          )}
         </div>
       </div>
+      {subTodos &&
+        subTodos?.map((subTodo: ITodo) => {
+          return (
+            <div key={subTodo._id} className="p-3">
+              <TodoItem todo={subTodo} isSubTodo />
+            </div>
+          );
+        })}
       {isExpanded && (
         <div className="flex items-center gap-3 px-2 py-3 mx-8">
           <MdKeyboardArrowRight size="1.5rem" />
