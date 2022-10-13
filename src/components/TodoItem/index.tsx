@@ -34,9 +34,9 @@ const TodoItem: React.FC<ITodoItem> = ({ todo }) => {
     setIsExpanded((prev) => !prev);
   };
 
-  const addSubTodoClickHandler = async () => {
+  const addSubTodoClickHandler = () => {
     if (subTodoText.length > 0) {
-      await addSubTodo(_id, subTodoText);
+      addSubTodo(_id, subTodoText);
       setSubTodoText("");
     } else {
       setAlertText("Please type some Sub Todo!");

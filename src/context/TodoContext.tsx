@@ -63,14 +63,14 @@ export const TodoContextProvider: React.FC<any> = ({ children }) => {
 
   const addSubTodo = useCallback(
     async (id?: string, subTodo?: string) => {
-      await NextAPI.post("api/todos/addSubTodo", { id, subTodo }).then(
-        () => mutateTodos
+      await NextAPI.post("api/todos/addSubTodo", { id, subTodo }).then(() =>
+        mutateTodos()
       );
     },
     [mutateTodos]
   );
 
-  const contextValue = useMemo(
+  const contextValue: ITodoContext = useMemo(
     () => ({
       todos,
       isLoading,
