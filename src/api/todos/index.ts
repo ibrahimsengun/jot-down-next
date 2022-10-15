@@ -22,11 +22,11 @@ export const getAllTodos = async () => {
   });
 };
 
-export const addTodo = async (title: string) => {
+export const addTodo = async (text: string) => {
   return await MongoClient.post("insertOne", {
     ...dbInfos,
     document: {
-      title,
+      text,
       isCompleted: false,
     } as ITodo,
   });

@@ -17,7 +17,7 @@ const TodoList: React.FC = () => {
   if (isLoading) return loadingSkeleton;
 
   return (
-    <div className="flex flex-col gap-2 w-full border border-stone-500 p-10">
+    <div className="flex flex-col gap-2 w-full border border-stone-500 p-5">
       <div>
         <h2 className="text-center mb-2 font-bold">Todos</h2>
       </div>

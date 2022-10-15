@@ -7,10 +7,10 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const { body } = req;
-  const { title } = body;
+  const { text } = body;
 
   return new Promise((resolve) => {
-    addTodo(title)
+    addTodo(text)
       .then(() => {
         res.status(200);
         res.end();

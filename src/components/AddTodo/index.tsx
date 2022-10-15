@@ -28,7 +28,7 @@ const AddTodo: React.FC = () => {
   };
 
   return (
-    <div className="grid justify-items-stretch p-24 gap-2">
+    <div className="grid justify-items-stretch p-5 gap-2">
       <div>
         <h2 className="text-center mb-2 font-bold">Add Todo</h2>
       </div>

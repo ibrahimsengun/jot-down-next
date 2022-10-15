@@ -8,10 +8,6 @@ import Header from "../layout/Header";
 import Layout from "../layout";
 
 const Home: NextPage = () => {
-  const id = useId();
-
-  console.log(id);
-
   return (
     <>
       <Head>
@@ -23,11 +19,11 @@ const Home: NextPage = () => {
       <Layout>
         <main>
           <div className="container mx-auto pt-10">
-            <div className="grid grid-cols-1 gap-3">
-              <div className="row-start-12">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="row-start-auto">
                 <AddTodo />
               </div>
-              <div className="row-start-12">
+              <div className="row-end-auto">
                 <TodoList />
               </div>
             </div>

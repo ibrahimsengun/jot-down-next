@@ -13,7 +13,7 @@ import { ITodo } from "../models/Todo";
 interface ITodoContext {
   todos: ITodo[] | undefined;
   isLoading: boolean;
-  addTodo: (title: string) => void;
+  addTodo: (text: string) => void;
   removeTodo: (id?: string) => void;
   completeTodo: (id?: string) => void;
 }
@@ -34,8 +34,8 @@ export const TodoContextProvider: React.FC<any> = ({ children }) => {
   });
 
   const addTodo = useCallback(
-    async (title: string) => {
-      await NextAPI.post("api/todos/addTodo", { title }).then(() =>
+    async (text: string) => {
+      await NextAPI.post("api/todos/addTodo", { text }).then(() =>
         mutateTodos()
       );
     },
