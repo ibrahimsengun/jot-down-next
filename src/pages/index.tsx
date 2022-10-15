@@ -22,7 +22,7 @@ const Home: NextPage = () => {
 
       <Layout>
         <main>
-          <div className="container mx-auto pt-10 px-44">
+          <div className="container mx-auto pt-10">
             <div className="grid grid-cols-1 gap-3">
               <div className="row-start-12">
                 <AddTodo />

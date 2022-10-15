@@ -46,26 +46,3 @@ export const completeTodo = async (id: string) => {
     update: { $set: { isCompleted: true } },
   });
 };
-
-export const addSubTodo = async (
-  id: string,
-  subTodo: string,
-  category?: string
-) => {
-  return await MongoClient.post("updateOne", {
-    ...dbInfos,
-    filter: { _id: { $oid: id } },
-    update: {
-      $set: {
-        subTodos: [
-          {
-            _id: uniqid(),
-            title: subTodo,
-            isCompleted: false,
-            category: category,
-          },
-        ],
-      },
-    },
-  });
-};

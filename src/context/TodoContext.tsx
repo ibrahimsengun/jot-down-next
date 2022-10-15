@@ -16,7 +16,6 @@ interface ITodoContext {
   addTodo: (title: string) => void;
   removeTodo: (id?: string) => void;
   completeTodo: (id?: string) => void;
-  addSubTodo: (id?: string, subTodo?: string) => void;
 }
 
 export const TodoContext = createContext({} as ITodoContext);
@@ -60,16 +59,6 @@ export const TodoContextProvider: React.FC<any> = ({ children }) => {
     },
     [mutateTodos]
   );
-
-  const addSubTodo = useCallback(
-    async (id?: string, subTodo?: string) => {
-      await NextAPI.post("api/todos/addSubTodo", { id, subTodo }).then(() =>
-        mutateTodos()
-      );
-    },
-    [mutateTodos]
-  );
-
   const contextValue: ITodoContext = useMemo(
     () => ({
       todos,
@@ -77,9 +66,8 @@ export const TodoContextProvider: React.FC<any> = ({ children }) => {
       addTodo,
       removeTodo,
       completeTodo,
-      addSubTodo,
     }),
-    [todos, isLoading, addTodo, removeTodo, completeTodo, addSubTodo]
+    [todos, isLoading, addTodo, removeTodo, completeTodo]
   );
 
   return (
