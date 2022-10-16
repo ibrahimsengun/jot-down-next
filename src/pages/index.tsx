@@ -18,13 +18,13 @@ const Home: NextPage = () => {
 
       <Layout>
         <main>
-          <div className="container mx-auto pt-10">
-            <div className="grid grid-cols-2 gap-3">
+          <div className="container mx-auto pt-10 xl:px-64 lg:px-44 md:px-32 sm:px-16">
+            <div className="grid grid-cols-1 gap-3">
               <div className="row-start-auto">
-                <AddTodo />
+                <TodoList />
               </div>
               <div className="row-end-auto">
-                <TodoList />
+                <AddTodo />
               </div>
             </div>
           </div>

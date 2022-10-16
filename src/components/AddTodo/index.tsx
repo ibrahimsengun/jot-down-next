@@ -28,7 +28,7 @@ const AddTodo: React.FC = () => {
   };
 
   return (
-    <div className="grid justify-items-stretch p-5 gap-2">
+    <div className="grid justify-items-stretch py-5 gap-2 px-44">
       <div>
         <h2 className="text-center mb-2 font-bold">Add Todo</h2>
       </div>
@@ -46,7 +46,7 @@ const AddTodo: React.FC = () => {
           icon={<BsPlusCircleFill />}
           iconRight
           text="Add"
-          className="bg-stone-800 outline outline-1 focus:border-stone-500"
+          className="bg-stone-800 outline outline-1 focus:border-stone-500 py-1"
           onClick={clickHandler}
           title="Add Todo"
         />

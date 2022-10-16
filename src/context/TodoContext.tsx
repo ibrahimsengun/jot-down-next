@@ -8,14 +8,17 @@ import {
 } from "react";
 import useSWR from "swr";
 import { NextAPI } from "../axios";
-import { ITodo } from "../models/Todo";
+import { ISubTodo, ITodo } from "../models/Todo";
 
 interface ITodoContext {
   todos: ITodo[] | undefined;
+  selectedTodo: ITodo | undefined;
   isLoading: boolean;
   addTodo: (text: string) => void;
   removeTodo: (id?: string) => void;
   completeTodo: (id?: string) => void;
+  addSubTodo: (id?: string, todo?: ISubTodo, subTodos?: ISubTodo[]) => void;
+  setSelectedTodo: (todo: ITodo) => void;
 }
 
 export const TodoContext = createContext({} as ITodoContext);
@@ -32,6 +35,14 @@ export const TodoContextProvider: React.FC<any> = ({ children }) => {
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
   });
+
+  const [selectedTodo, _setSelectedTodo] = useState<ITodo | undefined>(
+    undefined
+  );
+
+  const setSelectedTodo = useCallback((todo: ITodo) => {
+    _setSelectedTodo(todo);
+  }, []);
 
   const addTodo = useCallback(
     async (text: string) => {
@@ -59,15 +70,37 @@ export const TodoContextProvider: React.FC<any> = ({ children }) => {
     },
     [mutateTodos]
   );
+
+  const addSubTodo = useCallback(
+    async (id?: string, todo?: ISubTodo, subTodos?: ISubTodo[]) => {
+
+      await NextAPI.post("api/todos/addSubTodo", { id, todo, subTodos }).then(
+        () => mutateTodos()
+      );
+    },
+    [mutateTodos]
+  );
   const contextValue: ITodoContext = useMemo(
     () => ({
       todos,
+      selectedTodo,
       isLoading,
       addTodo,
       removeTodo,
       completeTodo,
+      setSelectedTodo,
+      addSubTodo,
     }),
-    [todos, isLoading, addTodo, removeTodo, completeTodo]
+    [
+      todos,
+      selectedTodo,
+      isLoading,
+      addTodo,
+      removeTodo,
+      completeTodo,
+      setSelectedTodo,
+      addSubTodo,
+    ]
   );
 
   return (

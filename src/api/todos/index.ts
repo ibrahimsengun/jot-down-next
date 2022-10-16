@@ -1,7 +1,7 @@
 import axios from "axios";
 import { MongoClient } from "../../axios";
 import uniqid from "uniqid";
-import { ITodo } from "../../models/Todo";
+import { ISubTodo, ITodo } from "../../models/Todo";
 
 const collectionName = "todos";
 const databaseName = "TodoDatabase";
@@ -44,5 +44,20 @@ export const completeTodo = async (id: string) => {
     ...dbInfos,
     filter: { _id: { $oid: id } },
     update: { $set: { isCompleted: true } },
+  });
+};
+
+export const addSubTodo = async (
+  id: string,
+  todo: ISubTodo,
+  subTodos?: ISubTodo[]
+) => {
+  return await MongoClient.post("updateOne", {
+    ...dbInfos,
+    filter: { _id: { $oid: id } },
+    update:
+      subTodos == undefined
+        ? { $set: { subTodos: [todo] } }
+        : { $set: { subTodos: [...subTodos, todo] } },
   });
 };
