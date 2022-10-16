@@ -5,6 +5,8 @@ import {
   BsCheckCircle,
   BsPlus,
   BsPlusCircle,
+  BsFillCaretDownFill,
+  BsFillCaretRightFill,
 } from "react-icons/bs";
 import Button from "../Button";
 import { useTodo } from "../../context/TodoContext";
@@ -17,16 +19,23 @@ interface ITodoItem {
 }
 
 const TodoItem: React.FC<ITodoItem> = ({ todo, onClick }) => {
-  const { _id, text, isCompleted } = todo;
+  const { _id, text, isCompleted, subTodos } = todo;
   const { completeTodo, removeTodo, addSubTodo, selectedTodo } = useTodo();
 
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [isAdding, setIsAdding] = useState<boolean>(false);
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [isSelectedTodo, setIsSelectedTodo] = useState<boolean>(
     selectedTodo?._id === _id
   );
 
   const [subTodoText, setSubTodoText] = useState<string>();
+
+  const arrowIcon = isExpanded ? (
+    <BsFillCaretDownFill size="0.7rem" />
+  ) : (
+    <BsFillCaretRightFill size="0.7rem" />
+  );
 
   useEffect(() => {
     setIsSelectedTodo(selectedTodo?._id === _id);
@@ -47,6 +56,16 @@ const TodoItem: React.FC<ITodoItem> = ({ todo, onClick }) => {
         } ${isSelectedTodo && "todo-item-selected"}`}
       >
         <div className="flex items-center">
+          {subTodos && subTodos?.length > 0 && (
+            <div>
+              <Button
+                icon={arrowIcon}
+                variant="borderless"
+                onClick={() => setIsExpanded((prev) => !prev)}
+              />
+            </div>
+          )}
+
           <div className="flex flex-col gap-3">
             <div
               className={`text-lg font-bold ${
@@ -84,6 +103,18 @@ const TodoItem: React.FC<ITodoItem> = ({ todo, onClick }) => {
             </div>
           )}
         </div>
+        {isExpanded && (
+          <div className="px-12 flex flex-col gap-1 mt-4">
+            {subTodos?.map((item: ISubTodo) => {
+              return (
+                <div key={item._id} className="border border-stone-500 rounded-sm px-1">
+                  {item.text}
+                </div>
+              );
+            })}
+          </div>
+        )}
+
         {(isHovered || isSelectedTodo) && isAdding && (
           <div className="px-1 mt-2">
             <input
@@ -111,7 +142,11 @@ const TodoItem: React.FC<ITodoItem> = ({ todo, onClick }) => {
       </div>
       {(isHovered || isSelectedTodo) && !isAdding && (
         <div className="relative">
-          <span className="absolute -top-8 -right-10">
+          <span
+            className={`absolute ${
+              isExpanded ? "bottom-[55px]" : "-top-[33px]"
+            } -right-10`}
+          >
             <Button
               icon={<BsPlus size="1.5rem" className="text-stone-400" />}
               hoveredIcon={
