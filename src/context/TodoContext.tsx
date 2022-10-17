@@ -19,6 +19,11 @@ interface ITodoContext {
   completeTodo: (id?: string) => void;
   addSubTodo: (id?: string, todo?: ISubTodo, subTodos?: ISubTodo[]) => void;
   setSelectedTodo: (todo: ITodo) => void;
+  completeSubTodo: (
+    id?: string,
+    subTodoId?: string,
+    subTodos?: ISubTodo[]
+  ) => void;
 }
 
 export const TodoContext = createContext({} as ITodoContext);
@@ -73,13 +78,24 @@ export const TodoContextProvider: React.FC<any> = ({ children }) => {
 
   const addSubTodo = useCallback(
     async (id?: string, todo?: ISubTodo, subTodos?: ISubTodo[]) => {
-
       await NextAPI.post("api/todos/addSubTodo", { id, todo, subTodos }).then(
         () => mutateTodos()
       );
     },
     [mutateTodos]
   );
+
+  const completeSubTodo = useCallback(
+    async (id?: string, subTodoId?: string, subTodos?: ISubTodo[]) => {
+      await NextAPI.post("api/todos/completeSubTodo", {
+        id,
+        subTodoId,
+        subTodos,
+      }).then(() => mutateTodos());
+    },
+    [mutateTodos]
+  );
+
   const contextValue: ITodoContext = useMemo(
     () => ({
       todos,
@@ -90,6 +106,7 @@ export const TodoContextProvider: React.FC<any> = ({ children }) => {
       completeTodo,
       setSelectedTodo,
       addSubTodo,
+      completeSubTodo,
     }),
     [
       todos,
@@ -100,6 +117,7 @@ export const TodoContextProvider: React.FC<any> = ({ children }) => {
       completeTodo,
       setSelectedTodo,
       addSubTodo,
+      completeSubTodo,
     ]
   );
 

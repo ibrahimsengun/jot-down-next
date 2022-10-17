@@ -61,3 +61,20 @@ export const addSubTodo = async (
         : { $set: { subTodos: [...subTodos, todo] } },
   });
 };
+
+export const completeSubTodo = async (
+  id: string,
+  subTodoId: string,
+  subTodos?: ISubTodo[]
+) => {
+  subTodos?.map((item: ISubTodo) => {
+    if (item._id == subTodoId) item.isCompleted = true;
+    return item;
+  });
+
+  return await MongoClient.post("updateOne", {
+    ...dbInfos,
+    filter: { _id: { $oid: id } },
+    update: { $set: { subTodos: subTodos } },
+  });
+};

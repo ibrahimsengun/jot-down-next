@@ -12,6 +12,7 @@ import Button from "../Button";
 import { useTodo } from "../../context/TodoContext";
 import { ISubTodo, ITodo } from "../../models/Todo";
 import uniqid from "uniqid";
+import SubTodoItem from "../SubTodoItem";
 
 interface ITodoItem {
   todo: ITodo;
@@ -106,11 +107,7 @@ const TodoItem: React.FC<ITodoItem> = ({ todo, onClick }) => {
         {isExpanded && (
           <div className="px-12 flex flex-col gap-1 mt-4">
             {subTodos?.map((item: ISubTodo) => {
-              return (
-                <div key={item._id} className="border border-stone-500 rounded-sm px-1">
-                  {item.text}
-                </div>
-              );
+              return <SubTodoItem subTodo={item} key={item._id} />;
             })}
           </div>
         )}
@@ -142,11 +139,7 @@ const TodoItem: React.FC<ITodoItem> = ({ todo, onClick }) => {
       </div>
       {(isHovered || isSelectedTodo) && !isAdding && (
         <div className="relative">
-          <span
-            className={`absolute ${
-              isExpanded ? "bottom-[55px]" : "-top-[33px]"
-            } -right-10`}
-          >
+          <span className={`absolute bottom-2 -right-10`}>
             <Button
               icon={<BsPlus size="1.5rem" className="text-stone-400" />}
               hoveredIcon={
