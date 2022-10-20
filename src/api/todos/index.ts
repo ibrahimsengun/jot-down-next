@@ -47,6 +47,14 @@ export const completeTodo = async (id: string) => {
   });
 };
 
+export const editTodoText = async (id: string, text: string) => {
+  return await MongoClient.post("updateOne", {
+    ...dbInfos,
+    filter: { _id: { $oid: id } },
+    update: { $set: { text: text } },
+  });
+};
+
 export const addSubTodo = async (
   id: string,
   todo: ISubTodo,

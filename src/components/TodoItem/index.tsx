@@ -21,15 +21,19 @@ interface ITodoItem {
 
 const TodoItem: React.FC<ITodoItem> = ({ todo, onClick }) => {
   const { _id, text, isCompleted, subTodos } = todo;
-  const { completeTodo, removeTodo, addSubTodo, selectedTodo } = useTodo();
+  const { completeTodo, removeTodo, addSubTodo, editTodoText, selectedTodo } =
+    useTodo();
 
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [isAdding, setIsAdding] = useState<boolean>(false);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
+
   const [isSelectedTodo, setIsSelectedTodo] = useState<boolean>(
     selectedTodo?._id === _id
   );
 
+  const [editText, setEditText] = useState<string>(text);
   const [subTodoText, setSubTodoText] = useState<string>();
 
   const arrowIcon = isExpanded ? (
@@ -42,14 +46,19 @@ const TodoItem: React.FC<ITodoItem> = ({ todo, onClick }) => {
     setIsSelectedTodo(selectedTodo?._id === _id);
     setIsHovered(false);
 
-    return () => setIsAdding(false);
+    return () => {
+      setIsAdding(false);
+      setIsEditing(false);
+    };
   }, [_id, selectedTodo?._id]);
 
   return (
     <div
+      className="cursor-pointer"
       onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(isSelectedTodo ? true : false)}
+      onDoubleClick={() => setIsEditing(true)}
     >
       <div
         className={`${
@@ -67,7 +76,17 @@ const TodoItem: React.FC<ITodoItem> = ({ todo, onClick }) => {
             </div>
           )}
 
-          <div className="flex flex-col gap-3">
+          {isEditing ? (
+            <input
+              className="bg-transparent border border-stone-500"
+              type="text"
+              value={editText}
+              onChange={(e) => setEditText(e.target.value)}
+              onKeyDown={(e) =>
+                e.key === "Enter" && editTodoText(_id, editText)
+              }
+            />
+          ) : (
             <div
               className={`text-lg font-bold ${
                 isCompleted ? " line-through text-stone-500" : ""
@@ -75,7 +94,7 @@ const TodoItem: React.FC<ITodoItem> = ({ todo, onClick }) => {
             >
               {text}
             </div>
-          </div>
+          )}
 
           {(isHovered || isSelectedTodo) && (
             <div className="flex order-2 justify-end ml-auto">
