@@ -7,12 +7,14 @@ import {
   BsPlusCircle,
   BsFillCaretDownFill,
   BsFillCaretRightFill,
+  BsTag,
 } from "react-icons/bs";
 import Button from "../Button";
 import { useTodo } from "../../context/TodoContext";
 import { ISubTodo, ITodo } from "../../models/Todo";
 import uniqid from "uniqid";
 import SubTodoItem from "../SubTodoItem";
+import CategoryBadge from "../CategoryBadge";
 
 interface ITodoItem {
   todo: ITodo;
@@ -20,7 +22,7 @@ interface ITodoItem {
 }
 
 const TodoItem: React.FC<ITodoItem> = ({ todo, onClick }) => {
-  const { _id, text, isCompleted, subTodos } = todo;
+  const { _id, text, isCompleted, subTodos, category } = todo;
   const { completeTodo, removeTodo, addSubTodo, editTodoText, selectedTodo } =
     useTodo();
 
@@ -98,7 +100,12 @@ const TodoItem: React.FC<ITodoItem> = ({ todo, onClick }) => {
 
           {(isHovered || isSelectedTodo) && (
             <div className="flex order-2 justify-end ml-auto">
-              <div>
+              <div className="flex gap-3">
+                {category && <CategoryBadge category={category} />}
+                <Button
+                  icon={<BsTag size="1.3rem" className="hover:text-sky-500" />}
+                  variant="borderless"
+                />
                 {!isCompleted && (
                   <Button
                     icon={<BsCircle size="1.3rem" />}
@@ -114,7 +121,6 @@ const TodoItem: React.FC<ITodoItem> = ({ todo, onClick }) => {
                   icon={
                     <BsTrash size="1.3rem" className="hover:text-red-600" />
                   }
-                  className="ml-2"
                   variant="borderless"
                   onClick={() => removeTodo(_id)}
                   title="Delete"

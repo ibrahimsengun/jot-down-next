@@ -3,7 +3,7 @@ export interface ITodo {
   text: string;
   isCompleted: boolean;
   subTodos?: ISubTodo[];
-  category?: string;
+  category?: ITodoCategory;
 }
 
 export interface ISubTodo {
@@ -11,4 +11,10 @@ export interface ISubTodo {
   parentId: string;
   text: string;
   isCompleted: boolean;
+}
+
+export interface ITodoCategory {
+  _id?: string;
+  name: string;
+  color: string;
 }

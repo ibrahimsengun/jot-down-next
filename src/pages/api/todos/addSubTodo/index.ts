@@ -8,8 +8,6 @@ export default async function handler(
   const { body } = req;
   const { id, todo, subTodos } = body;
 
-  console.log(subTodos);
-
   return new Promise((resolve) => {
     addSubTodo(id, todo, subTodos)
       .then(() => {
