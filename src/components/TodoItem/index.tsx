@@ -1,20 +1,16 @@
 import React, { useState, useRef, useEffect } from "react";
 import {
-  BsTrash,
-  BsCircle,
-  BsCheckCircle,
   BsPlus,
   BsPlusCircle,
   BsFillCaretDownFill,
   BsFillCaretRightFill,
-  BsTag,
 } from "react-icons/bs";
 import Button from "../Button";
 import { useTodo } from "../../context/TodoContext";
 import { ISubTodo, ITodo } from "../../models/Todo";
 import uniqid from "uniqid";
 import SubTodoItem from "../SubTodoItem";
-import CategoryBadge from "../CategoryBadge";
+import ActionButtons from "../ActionButtons";
 
 interface ITodoItem {
   todo: ITodo;
@@ -23,8 +19,7 @@ interface ITodoItem {
 
 const TodoItem: React.FC<ITodoItem> = ({ todo, onClick }) => {
   const { _id, text, isCompleted, subTodos, category } = todo;
-  const { completeTodo, removeTodo, addSubTodo, editTodoText, selectedTodo } =
-    useTodo();
+  const { addSubTodo, editTodoText, selectedTodo } = useTodo();
 
   const [isHovered, setIsHovered] = useState<boolean>(false);
   const [isAdding, setIsAdding] = useState<boolean>(false);
@@ -99,34 +94,11 @@ const TodoItem: React.FC<ITodoItem> = ({ todo, onClick }) => {
           )}
 
           {(isHovered || isSelectedTodo) && (
-            <div className="flex order-2 justify-end ml-auto">
-              <div className="flex gap-3">
-                {category && <CategoryBadge category={category} />}
-                <Button
-                  icon={<BsTag size="1.3rem" className="hover:text-sky-500" />}
-                  variant="borderless"
-                />
-                {!isCompleted && (
-                  <Button
-                    icon={<BsCircle size="1.3rem" />}
-                    hoveredIcon={
-                      <BsCheckCircle size="1.3rem" className="text-teal-500" />
-                    }
-                    variant="borderless"
-                    onClick={() => completeTodo(_id)}
-                    title="Check"
-                  />
-                )}
-                <Button
-                  icon={
-                    <BsTrash size="1.3rem" className="hover:text-red-600" />
-                  }
-                  variant="borderless"
-                  onClick={() => removeTodo(_id)}
-                  title="Delete"
-                />
-              </div>
-            </div>
+            <ActionButtons
+              _id={_id}
+              category={category}
+              isCompleted={isCompleted}
+            />
           )}
         </div>
         {isExpanded && (

@@ -1,21 +1,21 @@
-import axios from "axios";
 import { MongoClient } from "../../axios";
-import uniqid from "uniqid";
-import { ISubTodo, ITodo } from "../../models/Todo";
+import { ISubTodo, ITodo, ITodoCategory } from "../../models/Todo";
 
-const collectionName = "todos";
-const databaseName = "TodoDatabase";
-const dataSourceName = "Cluster0";
+const todoDbInfos = {
+  collection: "todos",
+  database: "TodoDatabase",
+  dataSource: "Cluster0",
+};
 
-const dbInfos = {
-  collection: collectionName,
-  database: databaseName,
-  dataSource: dataSourceName,
+const categoryDbInfos = {
+  collection: "categories",
+  database: "TodoDatabase",
+  dataSource: "Cluster0",
 };
 
 export const getAllTodos = async () => {
   return await MongoClient.post("find", {
-    ...dbInfos,
+    ...todoDbInfos,
     sort: { isCompleted: 1 },
   }).then((data) => {
     return data.data.documents;
@@ -24,7 +24,7 @@ export const getAllTodos = async () => {
 
 export const addTodo = async (text: string) => {
   return await MongoClient.post("insertOne", {
-    ...dbInfos,
+    ...todoDbInfos,
     document: {
       text,
       isCompleted: false,
@@ -34,14 +34,14 @@ export const addTodo = async (text: string) => {
 
 export const removeTodo = async (id: string) => {
   return await MongoClient.post("deleteOne", {
-    ...dbInfos,
+    ...todoDbInfos,
     filter: { _id: { $oid: id } },
   });
 };
 
 export const completeTodo = async (id: string) => {
   return await MongoClient.post("updateOne", {
-    ...dbInfos,
+    ...todoDbInfos,
     filter: { _id: { $oid: id } },
     update: { $set: { isCompleted: true } },
   });
@@ -49,7 +49,7 @@ export const completeTodo = async (id: string) => {
 
 export const editTodoText = async (id: string, text: string) => {
   return await MongoClient.post("updateOne", {
-    ...dbInfos,
+    ...todoDbInfos,
     filter: { _id: { $oid: id } },
     update: { $set: { text: text } },
   });
@@ -61,7 +61,7 @@ export const addSubTodo = async (
   subTodos?: ISubTodo[]
 ) => {
   return await MongoClient.post("updateOne", {
-    ...dbInfos,
+    ...todoDbInfos,
     filter: { _id: { $oid: id } },
     update:
       subTodos == undefined
@@ -81,8 +81,20 @@ export const completeSubTodo = async (
   });
 
   return await MongoClient.post("updateOne", {
-    ...dbInfos,
+    ...todoDbInfos,
     filter: { _id: { $oid: id } },
     update: { $set: { subTodos: subTodos } },
+  });
+};
+
+export const addCategory = async (todoId: string, category: ITodoCategory) => {
+  MongoClient.post("insertOne", {
+    ...categoryDbInfos,
+    document: { category: category },
+  });
+  return await MongoClient.post("updateOne", {
+    ...todoDbInfos,
+    filter: { _id: { $oid: todoId } },
+    update: { $set: { category: category } },
   });
 };

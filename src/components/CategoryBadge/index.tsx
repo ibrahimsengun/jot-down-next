@@ -1,15 +1,32 @@
 import React from "react";
 import { ITodoCategory } from "../../models/Todo";
+import AddCategoryField from "../AddCategoryField";
 
 interface ICategoryBadge {
   category: ITodoCategory;
+  isAddingCategory: boolean;
 }
 
-const CategoryBadge: React.FC<ICategoryBadge> = ({ category }) => {
+const CategoryBadge: React.FC<ICategoryBadge> = ({
+  category,
+  isAddingCategory,
+}) => {
   const { _id, name, color } = category;
 
   return (
-    <div className={`border p-0.5 text-sm rounded-sm ${color == 'sky' && 'bg-sky-700'}`}>{name}</div>
+    <div>
+      {isAddingCategory && (
+        <div>
+          <AddCategoryField />
+        </div>
+      )}
+      <div
+        className={`border p-0.5 text-sm rounded-sm `}
+        style={{ backgroundColor: color }}
+      >
+        {name}
+      </div>
+    </div>
   );
 };
 
