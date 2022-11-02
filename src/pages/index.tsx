@@ -2,9 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import AddTodo from "../components/AddTodo";
 import TodoList from "../components/TodoList";
-import React, { useId } from "react";
-import Footer from "../layout/Footer";
-import Header from "../layout/Header";
+import React from "react";
 import Layout from "../layout";
 
 const Home: NextPage = () => {

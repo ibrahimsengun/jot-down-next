@@ -2,11 +2,14 @@ import "../../styles/globals.css";
 import type { AppProps } from "next/app";
 import App from "next/app";
 import { TodoContextProvider } from "../context/TodoContext";
+import { CategoryContextProvider } from "../context/CategoryContext";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <TodoContextProvider>
-      <Component {...pageProps} />
+      <CategoryContextProvider>
+        <Component {...pageProps} />
+      </CategoryContextProvider>
     </TodoContextProvider>
   );
 }
