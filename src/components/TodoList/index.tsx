@@ -3,20 +3,7 @@ import { ITodo } from "../../models/Todo";
 import TodoItem from "../TodoItem";
 
 const TodoList: React.FC = () => {
-  const { todos, isLoading, setSelectedTodo } = useTodo();
-
-  const loadingSkeleton = (
-    <div className="p-5">
-      <h2 className="text-center mb-2 font-bold ">Todos</h2>
-      <div className="flex flex-col gap-3 animate-pulse w-full pt-2">
-        <div className="border px-3 py-3 rounded-sm bg-stone-800"></div>
-        <div className="border px-3 py-3 rounded-sm bg-stone-800"></div>
-        <div className="border px-3 py-3 rounded-sm bg-stone-800"></div>
-      </div>
-    </div>
-  );
-
-  if (isLoading) return loadingSkeleton;
+  const { todos, setSelectedTodo } = useTodo();
 
   return (
     <div className="flex flex-col gap-2 w-full p-5">
